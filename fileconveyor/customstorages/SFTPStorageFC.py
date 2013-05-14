@@ -67,7 +67,7 @@ class SFTPStorageFC(Storage):
     def __init__(self, sftp_config=None):
 
         #SAMPLE sftp_config object:
-        #{'root_path':'/','host':'123.45.6.789','username':'muddywaters','port':22,'timeout':45.0}
+        #{'root_path':'/','host':'123.45.6.789','username':'muddywaters','port':22,'timeout':45.0,'key_filename':'/path/to/prikey'}
 
         self._host = sftp_config['host'] # '123.45.6.789' 
         self._root_path = sftp_config['root_path'] # '/' 
@@ -77,20 +77,19 @@ class SFTPStorageFC(Storage):
         # you can put username/password there.  Or you can omit all that if
         # you"re using keys.
 
-        
+        #see options available in connect function: http://www.lag.net/paramiko/docs/paramiko.SSHClient-class.html#connect 
         if not "timeout" in sftp_config:
           sftp_config["timeout"] = 30.0
  
         if not "port" in sftp_config:
           sftp_config["timeout"] = 22 
 
-        #see options available in connect function: http://www.lag.net/paramiko/docs/paramiko.SSHClient-class.html#connect 
-        #SAMPLE: {'root_path':'/','host':'123.45.6.789','username':'muddywaters','port':22,'timeout':45.0}
-        if not "key_filename" in sftp_config:
-          self._params = {'username':sftp_config['username'],'port':int(sftp_config['port']),'timeout':float(sftp_config['timeout'])}
-        else:
-          self._params = {'username':sftp_config['username'],'port':int(sftp_config['port']),'timeout':float(sftp_config['timeout']), 'key_filename':sftp_config['key_filename']}
+        self._params = {'username':sftp_config['username'],'port':int(sftp_config['port']),'timeout':float(sftp_config['timeout'])}
 
+        if "password" in sftp_config:
+          self._params.update({'password':sftp_config['password']})
+        if "key_filename" in sftp_config:
+          self._params.update({'key_filename':sftp_config['key_filename']})
 
         self._interactive = getattr(settings, "SFTP_STORAGE_INTERACTIVE",
                                     False)
