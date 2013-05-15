@@ -86,11 +86,12 @@ class SFTPStorageFC(Storage):
 
         self._params = {'username':sftp_config['username'],'port':int(sftp_config['port']),'timeout':float(sftp_config['timeout'])}
 
-        if "password" in sftp_config:
+        if sftp_config['password'] is not None:
           self._params.update({'password':sftp_config['password']})
-        if "key_filename" in sftp_config:
+        if sftp_config['key_filename'] is not None:
+          # note: if specifying keys, do not search ~/.ssh path
+          self._params.update({'look_for_keys':False})
           self._params.update({'key_filename':sftp_config['key_filename']})
-
         self._interactive = getattr(settings, "SFTP_STORAGE_INTERACTIVE",
                                     False)
         self._file_mode = getattr(settings, "SFTP_STORAGE_FILE_MODE", None)

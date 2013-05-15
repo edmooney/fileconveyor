@@ -1,6 +1,5 @@
 from transporter import *
 from customstorages.SFTPStorageFC import SFTPStorageFC
-#from storages.backends.sftpstorage import SFTPStorage
 
 
 TRANSPORTER_CLASS = "TransporterSFTP"
@@ -10,7 +9,7 @@ class TransporterSFTP(Transporter):
 
 
     name              = 'SFTP'
-    valid_settings    = ImmutableSet(["host", "username", "root_path", "port", "timeout", "key_filename"])
+    valid_settings    = ImmutableSet(["host", "username", "password", "root_path", "port", "timeout", "key_filename"])
     required_settings = ImmutableSet(["host", "username", "root_path"])
 
     def __init__(self, settings, callback, error_callback, parent_logger=None):
@@ -28,11 +27,13 @@ class TransporterSFTP(Transporter):
           self.settings["timeout"] = 30.0
         if not "port" in self.settings:
           self.settings["port"] = 22
+        if not "password" in self.settings:
+          self.settings["password"] = None 
         if not "key_filename" in self.settings:
           self.settings["key_filename"] = None 
 
         try:
-          self.storage = SFTPStorageFC({'root_path':self.settings['root_path'],'host':self.settings['host'],'username':self.settings['username'],'port':self.settings['port'],'timeout':self.settings['timeout'],'key_filename':self.settings['key_filename']})
+          self.storage = SFTPStorageFC({'root_path':self.settings['root_path'],'host':self.settings['host'],'username':self.settings['username'],'password':self.settings['password'],'port':self.settings['port'],'timeout':self.settings['timeout'],'key_filename':self.settings['key_filename']})
         except Exception, e:
           raise Exception(e)
 
