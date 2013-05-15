@@ -82,15 +82,15 @@ class SFTPStorageFC(Storage):
           sftp_config["timeout"] = 30.0
  
         if not "port" in sftp_config:
-          sftp_config["timeout"] = 22 
+          sftp_config["port"] = 22 
 
-        self._params = {'username':sftp_config['username'],'port':int(sftp_config['port']),'timeout':float(sftp_config['timeout'])}
+        #turn of looking for keys - problematic if multiple keys/non-default named key located in ~/.ssh
+        self._params = {'look_for_keys':False,'username':sftp_config['username'],'port':int(sftp_config['port']),'timeout':float(sftp_config['timeout'])}
 
         if sftp_config['password'] is not None:
           self._params.update({'password':sftp_config['password']})
         if sftp_config['key_filename'] is not None:
           # note: if specifying keys, do not search ~/.ssh path
-          self._params.update({'look_for_keys':False})
           self._params.update({'key_filename':sftp_config['key_filename']})
         self._interactive = getattr(settings, "SFTP_STORAGE_INTERACTIVE",
                                     False)
