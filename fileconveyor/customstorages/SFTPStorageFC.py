@@ -66,11 +66,8 @@ class SFTPStorageFC(Storage):
 
     def __init__(self, sftp_config=None):
 
-        #SAMPLE sftp_config object:
-        #{'root_path':'/','host':'123.45.6.789','username':'muddywaters','port':22,'timeout':45.0,'key_filename':'/path/to/prikey'}
-
-        self._host = sftp_config['host'] # '123.45.6.789' 
-        self._root_path = sftp_config['root_path'] # '/' 
+        self._host = sftp_config['host']  
+        self._root_path = sftp_config['root_path']  
         
         # if present, settings.SFTP_STORAGE_PARAMS should be a dict with params
         # matching the keyword arguments to paramiko.SSHClient().connect().  So
