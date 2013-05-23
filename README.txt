@@ -292,7 +292,7 @@ Available settings:
 - key
 
 
-Transporter: SFTP (sftp) - not using django-storages sftp
+Transporter: SFTP (sftp) - not using django-storages sftp see customstorages folder
 ------------------------
 Value to enter: "sftp".
 
